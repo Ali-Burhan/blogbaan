@@ -4,10 +4,7 @@ import { createContext, useContext, useEffect, useState } from "react";
 const Usercontextstate = createContext()
 
 const UserContext = ({children}) => {
-  const cookieValue = document.cookie
-  .split(';')
-  .find(cookie => cookie.startsWith('blogbaan'));
-    const [user,setUser] = useState(cookieValue)
+    const [user,setUser] = useState('')
     useEffect(()=>{
       const cookieValue = document.cookie
   .split(';')

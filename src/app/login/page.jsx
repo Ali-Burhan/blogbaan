@@ -41,10 +41,7 @@ const Page = () => {
        
        let data = await response.json();
        if(data.status == 200){
-        const cookieValue = document.cookie
-  .split(';')
-  .find(cookie => cookie.startsWith('blogbaan'));
-  setUser(cookieValue)
+  setUser(data.token)
   localStorage.setItem('user',JSON.stringify(data.user))
          values.password = ""
          values.email = ""

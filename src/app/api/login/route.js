@@ -8,13 +8,12 @@ export async function POST(request) {
         const {email,password} = await request.json()
         await connectToDatabase()
         const findUser = await User.findOne({email})
-        console.log(findUser);
         if(findUser){
             const comparePass = await bcrypt.compare(password,findUser.password)
             if(comparePass){
                 const token = await jwt.sign({findUser},process.env.SECRET_KEY)
                     cookies().set('blogbaan',token)     
-                    return Response.json({message:"Success",status:200,user:findUser})
+                    return Response.json({message:"Success",status:200,user:findUser,token:token})
             }
         }
         else{

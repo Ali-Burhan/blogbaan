@@ -22,7 +22,7 @@ const Navbar = () => {
               <div className="flex gap-2 items-center">
                 {!user &&
                 <>
-                <Link href={'/login'}>Login</Link>
+                <Link href={'/login'}>Login</Link> /
                 <Link href={'/signup'}>Sign Up</Link>
                 </>
                  }
