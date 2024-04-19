@@ -1,11 +1,14 @@
+'use client'
 import Image from 'next/image'
-import React from 'react'
 import { Button } from './button'
 import { FaLaptopCode } from "react-icons/fa6";
 import Link from 'next/link';
 import { AiOutlinePlus } from "react-icons/ai";
 import { FiEye } from "react-icons/fi";
+import { UserAuth } from './usercontext';
+
 const Main = () => {
+    const {user} = UserAuth()    
   return (
     <div className='p-14'>
         <div>
@@ -13,13 +16,15 @@ const Main = () => {
             <div className='flex sm:flex-col flex-col md:flex-row sm:mt-14 mt-14 md:mt-0'>
                 {/* buttons div */}
                 <div className='flex flex-col items-center flex-1 justify-center gap-8'>
+                    {user &&
                     <Button className='flex gap-3 px-5'>
                     <AiOutlinePlus/>
                         <Link href={'/'}>Create Blog</Link>
                     </Button>
+                    }
                     <Button className='flex gap-3 px-5'>
                     <FiEye/>
-                        <Link href={'/'}>Read Blog</Link>
+                        <Link href={'/blogs'}>Read Blog</Link>
                     </Button>
                 </div>
                 {/* svg div */}

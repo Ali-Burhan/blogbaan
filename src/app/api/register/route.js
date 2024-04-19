@@ -1,13 +1,21 @@
 import connectToDatabase from "@/lib/db/db";
 import { User } from "@/lib/schemas/user";
-
-export async function GET(request) {
+import bcrypt from 'bcryptjs'
+export async function POST(request) {
     try {
-        
+        const {name,email,password} = await request.json();
+        if(!name || !email || !password){
+            return Response.json({message:"Fields Required",status:400})
+        }
+        const oldUser = await User.find({email})
+        if(oldUser.length > 0){
+            return Response.json({message:"Error",status:401})
+        }
+        const hashedPass = await bcrypt.hash(password,10)
         await connectToDatabase()
-        const newUser = await new User({name:"Ali",email:"ali@gmail.com",password:"password"})
+        const newUser = await new User({name,email,password:hashedPass})
         await newUser.save()
-        return Response.json({message:"Success"})
+        return Response.json({message:"Success",status:200})
     } catch (error) {
         console.log(error);
     }
