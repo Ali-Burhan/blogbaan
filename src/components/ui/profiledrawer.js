@@ -37,7 +37,7 @@ export function DrawerDialogDemo() {
     return (
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
-          <Image src={'/Ali.jpg'} width={40} height={40} className="rounded-full"/>
+          <Image src={'/Ali.jpg'} width={40} height={40} className="rounded-full" alt="image"/>
         </DialogTrigger>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>

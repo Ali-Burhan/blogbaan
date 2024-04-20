@@ -1,0 +1,28 @@
+import mongoose from "mongoose";
+
+const blogSchema = new mongoose.Schema({
+    title:{
+        type:String
+    },
+    image:{
+        type:Buffer
+    },
+    blogText:{
+        type:String
+    },
+    likes:{
+            type:[String]
+    },
+    comments:{
+            type:[String]
+    },
+    createdby:{
+        type:String
+    },
+    date:{
+        type:String
+    }
+
+})
+
+export const Blog = mongoose.models.blog || mongoose.model('blog',blogSchema)

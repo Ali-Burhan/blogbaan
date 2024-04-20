@@ -66,9 +66,9 @@ const Page = () => {
                  <ModeToggle/>       
             </div>
               </div>
-        <div className="h-[calc(100vh-5rem)]  flex items-center">
+        <div className="h-[calc(100vh-5rem)] flex sm:flex-col md:flex-row flex-col items-center">
                 <div className="flex-1 flex justify-center">
-                        <div className="px-10 rounded-lg  py-14 border shadow w-[500px]">
+                        <div className="px-10 rounded-lg  py-14 border shadow md:w-[500px] sm:w-[400px] w-[400px]">
                             {error && <p className="text-3xl font-semibold text-red-500">Error Occured</p>}
                             <p className="text-3xl font-semibold">Welcome</p>
                             <p className="mt-2">Login to your Account</p>
@@ -90,12 +90,9 @@ const Page = () => {
                                 <p className="text-center mt-1">Do not have an account? <Link href={'/signup'} className="font-bold">Sign up</Link></p>
                             </div>
                                 </form>
-
-
-
                         </div>
                 </div>
-                <div className="flex-1 flex flex-col justify-center items-center gap-10 font-bold">
+                <div className="flex-1  flex-col justify-center items-center gap-10 font-bold hidden md:flex">
                     <p className="text-6xl">Let Blog it</p>
                     <FaLaptopCode className='h-72 w-72'/>
                 </div>
