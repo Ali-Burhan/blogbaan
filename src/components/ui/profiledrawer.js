@@ -22,6 +22,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import Image from "next/image"
+import Link from "next/link"
 
 export function DrawerDialogDemo() {
   const [open, setOpen] = React.useState(false)
@@ -45,7 +46,7 @@ export function DrawerDialogDemo() {
             <DialogDescription>
             </DialogDescription>
           </DialogHeader>
-          <Button variant='secondary'>Profile</Button>
+          <Link href={'/profile'}><Button className="w-full" variant='secondary'> Profile</Button></Link>
           <Button onClick={()=>deleteCookie('blogbaan')}>Logout</Button>
         </DialogContent>
       </Dialog>

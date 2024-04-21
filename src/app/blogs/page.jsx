@@ -7,6 +7,9 @@ import { BiLike } from "react-icons/bi";
 import { FaRegComment } from "react-icons/fa";
 import { IoShareSocial } from "react-icons/io5";
 import Skeleton from '@mui/material/Skeleton';
+import { useToast } from "@/components/ui/use-toast";
+import { Button } from "@/components/ui/button";
+import { Toaster } from "@/components/ui/toaster";
 
   
 const Page = () => {
@@ -14,11 +17,12 @@ const [like,setlike] = useState(false)
 const router = useRouter();
 const [blogs,setBlogs] = useState([])
 const [loding,setLoading] = useState(false)
+const { toast } = useToast()
+
 const likeBlog = async (id) => {
 
   const user = JSON.parse(localStorage.getItem('user'))?._id? true:false
   if(user){
-    setlike(!like)
     let headersList = {
       "Accept": "*/*",
     "Content-Type": "application/json"
@@ -36,6 +40,13 @@ const likeBlog = async (id) => {
    
    let data = await response.json();
    console.log(data);
+   if(data.status != 200){
+    toast({
+      title: "You Have Already Liked The Post",
+    })
+   }else{
+     setlike(!like)
+    }
   }else{
     router.push('/login')
   }
@@ -59,7 +70,26 @@ async function fetchBlogs() {
    setLoading(false)
 }
 fetchBlogs()
-  },[like])
+  },[])
+  useEffect(()=>{
+    async function fetchBlogs() {
+      
+      let headersList = {
+        "Accept": "*/*",
+       }
+       
+       let response = await fetch("/api/blog", { 
+         method: "GET",
+         headers: headersList
+       });
+       
+       let data = await response.json();
+       console.log(data);
+       setBlogs(data.allBlogs)
+       
+    }
+    fetchBlogs()
+      },[like])
 
   const LikeButton = ({ blogId, user }) => {
     let isLiked = false
@@ -116,6 +146,8 @@ fetchBlogs()
       <div className="flex justify-center " >
         <div className="w-[800px] p-5">
           <p className="font-semibold my-5">Feed</p>
+          
+    
           {/* single blog */}
           {loding && loadSkelton()}
           {blogs.map((ele,ind)=>(

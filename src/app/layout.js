@@ -4,6 +4,7 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/ui/themeprovider";
 import UserContext from "@/components/ui/usercontext";
 import { AppProgressBar as ProgressBar } from 'next-nprogress-bar';
+import { Toaster } from "@/components/ui/toaster";
 const inter = Inter({ subsets: ["latin"] });
 
 // export const metadata = {
@@ -37,6 +38,7 @@ export default function RootLayout({ children }) {
         </ThemeProvider>
 
               </UserContext>
+              <Toaster/>
         </body>
     </html>
   );
