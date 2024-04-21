@@ -90,7 +90,7 @@ const Page = () => {
                 </div>
                 <div className="flex-1 md:flex flex-col justify-center items-center gap-10 font-bold hidden">
                     <p className="text-6xl">
-                      Let's Blog It
+                      Let Blog It
                     </p>
                     <FaLaptopCode className='h-72 w-72'/>
                 </div>
