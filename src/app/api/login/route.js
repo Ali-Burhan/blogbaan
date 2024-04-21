@@ -11,7 +11,7 @@ export async function POST(request) {
         if(findUser){
             const comparePass = await bcrypt.compare(password,findUser.password)
             if(comparePass){
-                const token = await jwt.sign({findUser},process.env.SECRET_KEY)
+                const token = await jwt.sign({id:findUser._id},process.env.SECRET_KEY)
                     cookies().set('blogbaan',token)     
                     return Response.json({message:"Success",status:200,user:findUser,token:token})
             }

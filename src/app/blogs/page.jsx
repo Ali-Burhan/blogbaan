@@ -75,7 +75,7 @@ fetchBlogs()
   
   function loadSkelton() {
     return (<>
-     <div className="w-[800px] border rounded-lg p-5 m-auto">
+     <div className="md:w-[800px] sm:w-[300px] w-[300px] border rounded-lg p-5 m-auto">
     <div className="flex gap-5">
   <Skeleton variant="circular" width={50} height={50}/>
   <div className="flex-1">
@@ -119,7 +119,7 @@ fetchBlogs()
           {/* single blog */}
           {loding && loadSkelton()}
           {blogs.map((ele,ind)=>(
-            <div key={ind}  className="p-5 border rounded-lg flex flex-col gap-3 my-3">
+            <div key={ind}  className="p-5 border rounded-lg flex flex-col gap-3 my-3 shadow-lg neuadd">
             {/* image + name Div*/}
             <div className="flex gap-3 items-center">
              <img width={50} height={50}  src={`data:image/jpeg;base64,${Buffer.from(ele.image.data).toString("base64")}`} alt="Service Image" className="rounded-full h-14 w-14" />

@@ -12,10 +12,12 @@ import Skeleton from '@mui/material/Skeleton';
 
 
 
-
 const Page = ({params}) => {
     const [blog,setBlog] = useState({})
     const [loading,setLoading] = useState(false)
+    const [comment,setComment] = useState("")
+    const [commented,setCommented] = useState("")
+    const [user,setUser] = useState([])
     const router = useRouter();  
     useEffect(()=>{
       async function fecthData(){
@@ -34,7 +36,25 @@ const Page = ({params}) => {
          setLoading(false)
       }
       fecthData()
-    },[])
+    },[commented])
+
+    useEffect(()=>{
+      async function userFecth(){
+        let headersList = {
+          "Accept": "*/*",
+         }
+         
+         let response = await fetch("/api/user", { 
+           method: "GET",
+           headers: headersList
+         });
+         
+         let data = await response.json();
+         setUser(data.users)
+      }
+
+      userFecth()
+    },[commented])
     const LikeButton = ({ blogId, user }) => {
       let isLiked = false
       blogId?.map((id, i) =>{
@@ -48,7 +68,7 @@ const Page = ({params}) => {
     };
     function loadSkelton() {
       return (<>
-       <div className="w-[700px] border rounded-lg p-5 m-auto">
+       <div className="md:w-[700px] sm:w-[300px] w-[300px]  border rounded-lg p-5 m-auto">
       <div className="flex gap-5">
     <Skeleton variant="circular" width={70} height={70}/>
     <div className="flex-1">
@@ -60,13 +80,40 @@ const Page = ({params}) => {
     </div>
     </>)
     }
+
+
+    //comment function
+    async function handleCommentSubmit(){
+      if(!comment){
+          alert("please write a comment")
+      }else{
+      let headersList = {
+        "Accept": "*/*",
+        "Content-Type": "application/json"
+       }
+       
+       let bodyContent = JSON.stringify({
+           userid:JSON.parse(localStorage.getItem('user'))._id,
+           comment
+       });
+       
+       let response = await fetch(`/api/blog/${params.id}`, { 
+         method: "PUT",
+         body: bodyContent,
+         headers: headersList
+       });
+       
+       let data = await response.json();
+       setCommented(!commented)
+      } 
+    }
   
   return (
     <div>
         <Navbar/>
         
            <div className="flex justify-center ">
-        <div className="max-w-[800px] p-5">
+        <div className="w-[800px] p-5">
           {/* single blog */}
           <div className="p-5 border rounded-lg flex flex-col gap-3">
             <p className="flex gap-1 items-center border rounded-lg p-1 justify-center cursor-pointer" onClick={()=>router.back()}>
@@ -90,14 +137,14 @@ const Page = ({params}) => {
                 <div className="flex gap-1">
               {/* like */}
               <div className="flex gap-1">
-              <LikeButton blogId={blog.likes} user={JSON.parse(localStorage.getItem('user'))?._id || ""} />
-                <p className="text-xs">{blog.likes?.length}</p>
+              <LikeButton blogId={blog?.likes} user={JSON.parse(localStorage.getItem('user'))?._id || ""} />
+                <p className="text-xs">{blog?.likes?.length}</p>
               </div>
               {/* comment */}
               <div className="flex gap-1">
 
                 <FaRegComment />
-                <p className="text-xs">{blog.comments?.length}</p>
+                <p className="text-xs">{blog?.comments?.length}</p>
               </div>
               {/* share */}
               <div>
@@ -107,75 +154,36 @@ const Page = ({params}) => {
               </div>
             {/* add comment input */}
             <div className="flex my-2 border rounded-full p-1">
-            <input type="text" className="w-full outline-none placeholder:text-sm px-4 h-full dark:bg-transparent" placeholder="Add Your Comment"/>    
-                <VscSend className="h-6 w-6 cursor-pointer"/>
+            <input type="text" className="w-full outline-none placeholder:text-sm px-4 h-full dark:bg-transparent" placeholder="Add Your Comment" onChange={(e)=>setComment(e.target.value)}/>    
+                <VscSend className="h-6 w-6 cursor-pointer" onClick={handleCommentSubmit}/>
             </div>
             </div>
             {/* pasted comments div */}
-            <div className="flex gap-3 my-1">
-
-
+          <div>
+            {blog?.comments?.map((ele,ind)=>(
+                user?.map((use,index)=>(
+                  use._id == ele.userid?
+            <div className="flex gap-3 my-1" key={ind}>
                 {/* image div */}
                 <div>
-                    <Image src={'/Ali.jpg'} height={40} width={40} className="rounded-full" alt="Image"/>
+                <img width={50} height={50}  src={`data:image/jpeg;base64,${Buffer.from(use.profile?.data).toString("base64")}`} alt="Service Image" className="rounded-full h-14 w-14" />
                 </div>
                 {/* name + date and comment div */}
                 <div className="flex-1">
                     {/* name + dat */}
                         <div className="flex gap-4 items-center">
-                            <p className="font-semibold">Ali Burhan</p>
+                            <p className="font-semibold">{use.name}</p>
                             <p className="text-sm tracking-tighter">3 July</p>
                         </div>
                         {/* comment */}
                         <div className="p-3 border mt-1 rounded">
-                            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sit reiciendis consectetur praesentium est iste perspiciatis.
-                            <p className="mt-1 text-sm font-semibold">Reply</p>
+                            {ele.comment}
                         </div>
-
                 </div>
-            </div>
-            <div className="flex gap-3 my-1">
-
-                {/* image div */}
-                <div>
-                    <Image src={'/Ali.jpg'} height={40} width={40} className="rounded-full" alt="Image"/>
-                </div>
-                {/* name + date and comment div */}
-                <div className="flex-1">
-                    {/* name + dat */}
-                        <div className="flex gap-4 items-center">
-                            <p className="font-semibold">Ali Burhan</p>
-                            <p className="text-sm tracking-tighter">3 July</p>
-                        </div>
-                        {/* comment */}
-                        <div className="p-3 border mt-1 rounded">
-                            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sit reiciendis consectetur praesentium est iste perspiciatis.
-                            <p className="mt-1 text-sm font-semibold">Reply</p>
-                        </div>
-
-                </div>
-            </div>
-            <div className="flex gap-3 my-1">
-
-                {/* image div */}
-                <div>
-                    <Image src={'/Ali.jpg'} height={40} width={40} className="rounded-full" alt="Image"/>
-                </div>
-                {/* name + date and comment div */}
-                <div className="flex-1">
-                    {/* name + dat */}
-                        <div className="flex gap-4 items-center">
-                            <p className="font-semibold">Ali Burhan</p>
-                            <p className="text-sm tracking-tighter">3 July</p>
-                        </div>
-                        {/* comment */}
-                        <div className="p-3 border mt-1 rounded">
-                            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sit reiciendis consectetur praesentium est iste perspiciatis.
-                            <p className="mt-1 text-sm font-semibold">Reply</p>
-                        </div>
-
-                </div>
-            </div>
+            </div>:null
+                      ))
+            ))}
+            </div>            
             </div>
             }
           </div>

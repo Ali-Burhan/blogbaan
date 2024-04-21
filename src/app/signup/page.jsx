@@ -13,6 +13,7 @@ const Page = () => {
   const [error,setError] = useState(false)
   const router = useRouter()
   const [loading,setLoading] = useState(false)
+  const [profile,setProfile] = useState(null)
   const formik = useFormik({
     initialValues:{
       name:"",
@@ -20,23 +21,19 @@ const Page = () => {
       password:"",
     },
     onSubmit: async values => {
+      const form = new FormData()
+      form.append("name",values.name)
+      form.append("email",values.email)
+      form.append("password",values.password)
+      form.append("profile",profile)
+  
       setError(false)
       setLoading(true)
-      let headersList = {
-        "Accept": "*/*",
-        "Content-Type": "application/json"
-       }
-       
-       let bodyContent = JSON.stringify({
-           email:values.email,
-           password:values.password,
-           name:values.name
-       });
-       
+      
        let response = await fetch("/api/register", { 
+
          method: "POST",
-         body: bodyContent,
-         headers: headersList
+         body: form,
        });
        
        let data = await response.json();
@@ -73,6 +70,7 @@ const Page = () => {
                                 <input type="text" className="border-b-2 w-[100%] outline-none p-2 rounded-lg" placeholder="Name" id="name" name="name" value={formik.values.name} onChange={formik.handleChange}/>
                                 <input type="text" className="border-b-2 w-[100%] outline-none p-2 rounded-lg" placeholder="Email" id="email" name="email" value={formik.values.email} onChange={formik.handleChange}/>
                                 <input type="password" className="border-b-2 w-[100%] outline-none p-2 rounded-lg" placeholder="Password" id="password" name="password" value={formik.values.password} onChange={formik.handleChange}/>
+                                <input type="file"  className="border-b-2 w-[100%] outline-none p-2 rounded-lg" placeholder="profile" id="prfile" name="profile" onChange={(e)=>setProfile(e.target.files[0])}/>
                                 <p className="absolute -bottom-6 text-xs right-0">Forget Password?</p>
                             </div>
                             
@@ -91,7 +89,9 @@ const Page = () => {
                   </form>
                 </div>
                 <div className="flex-1 md:flex flex-col justify-center items-center gap-10 font-bold hidden">
-                    <p className="text-6xl">Let Blog it</p>
+                    <p className="text-6xl">
+                      Let's Blog It
+                    </p>
                     <FaLaptopCode className='h-72 w-72'/>
                 </div>
         </div>

@@ -40,3 +40,17 @@ export async function GET(request,{params}){
         return Response.json({message:"internal server error",status:500})
     }
 }
+
+
+export async function PUT(request,{params}){
+    const {id} = params
+    const {comment,userid} = await request.json()
+    try {
+        await connectToDatabase()
+        const updateWithcomment = await Blog.updateOne({_id:id},{$push:{comments:{comment,userid,commented:true}}} )
+        return Response.json({message:"Success",status:200})
+    } catch (error) {
+        console.log(error);
+        return Response.json({message:"Internal Server Error",status:500})
+    }
+}

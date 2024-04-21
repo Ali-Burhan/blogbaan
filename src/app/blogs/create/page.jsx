@@ -45,8 +45,8 @@ const Page = () => {
         <Navbar/>
             <p className='text-5xl font-semibold text-center'>Create A Blog</p>
         <div className='p-5 flex justify-center mt-5'>
-          {loading?<button class="loader__btn ">
-  <div class="loader"></div>
+          {loading?<button className="loader__btn ">
+  <div className="loader"></div>
   Creating Blog
 </button>:
             <form onSubmit={formik.handleSubmit}>

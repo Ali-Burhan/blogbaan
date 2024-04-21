@@ -19,6 +19,7 @@ const blogSchema = new mongoose.Schema({
     comments:{
             type:[{
                 userid:String,
+                comment:String,
                 commented:Boolean
             }]
     },

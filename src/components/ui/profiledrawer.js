@@ -1,5 +1,4 @@
 import * as React from "react"
-
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import {
@@ -38,7 +37,8 @@ export function DrawerDialogDemo() {
     return (
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
-          <Image src={'/Ali.jpg'} width={40} height={40} className="rounded-full" alt="image"/>
+          {/* <Image src={'/Ali.jpg'} width={40} height={40} className="rounded-full" alt="image"/> */}
+          <img width={40} height={40}  src={`data:image/jpeg;base64,${Buffer.from(JSON.parse(localStorage.getItem('user')).profile?.data).toString("base64")}`} alt="Service Image" className="rounded-full h-14 w-14" />
         </DialogTrigger>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
