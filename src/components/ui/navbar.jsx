@@ -22,13 +22,13 @@ const Navbar = () => {
               <div className="flex gap-2 items-center">
                 {!user &&
                 <>
-                <Link href={'/login'}>Login</Link> /
-                <Link href={'/signup'}>Sign Up</Link>
+                <Link href={'/login'} className="sm:text-xs text-xs md:text-lg">Login</Link> /
+                <Link href={'/signup'} className="sm:text-xs text-xs md:text-lg" >Sign Up</Link>
                 </>
                  }
                 {user &&
                 <>
-                <p>{JSON.parse(localStorage.getItem('user'))?.name}</p>
+                <p className="sm:text-xs text-xs md:text-lg">{JSON.parse(localStorage.getItem('user'))?.name}</p>
                 <p className="cursor-pointer">
                     <DrawerDialogDemo/>
                 </p>

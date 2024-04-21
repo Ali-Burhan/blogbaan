@@ -31,9 +31,12 @@ const Main = () => {
                 <div className='flex justify-center flex-1'>
                     {/* <Image src={'/mainsvg.png'} width={400} height={400}/> */}
                     <FaLaptopCode className='h-72 w-72'/>
+                    
+      
                 </div>
             </div>
         </div>
+        
     </div>
   )
 }

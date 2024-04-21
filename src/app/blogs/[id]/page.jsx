@@ -7,11 +7,64 @@ import { VscSend } from "react-icons/vsc";
 import { IoShareSocial } from "react-icons/io5";
 import { FaLongArrowAltLeft } from "react-icons/fa";
 import { useRouter } from "next/navigation";
-const Page = () => {
-    const router = useRouter();
+import { useEffect, useState } from "react";
+import Skeleton from '@mui/material/Skeleton';
+
+
+
+
+const Page = ({params}) => {
+    const [blog,setBlog] = useState({})
+    const [loading,setLoading] = useState(false)
+    const router = useRouter();  
+    useEffect(()=>{
+      async function fecthData(){
+        setLoading(true)
+        let headersList = {
+          "Accept": "*/*",
+         }
+         
+         let response = await fetch(`/api/blog/${params.id}`, { 
+           method: "GET",
+           headers: headersList
+         });
+         
+         let data = await response.json();
+         setBlog(data.blog)
+         setLoading(false)
+      }
+      fecthData()
+    },[])
+    const LikeButton = ({ blogId, user }) => {
+      let isLiked = false
+      blogId?.map((id, i) =>{
+        if(id.userid == user){
+          isLiked = true
+        }
+      })
+      return (
+        <BiLike className={isLiked ? 'text-blue-400' : ''} /> // Ternary operator for conditional class
+      );
+    };
+    function loadSkelton() {
+      return (<>
+       <div className="w-[700px] border rounded-lg p-5 m-auto">
+      <div className="flex gap-5">
+    <Skeleton variant="circular" width={70} height={70}/>
+    <div className="flex-1">
+    <Skeleton width={'100%'} height={30}/>
+    <Skeleton width={'70%'} height={30}/>
+    </div>
+      </div>
+    <Skeleton  width={"100%"} height={400}/>
+    </div>
+    </>)
+    }
+  
   return (
     <div>
         <Navbar/>
+        
            <div className="flex justify-center ">
         <div className="max-w-[800px] p-5">
           {/* single blog */}
@@ -20,38 +73,35 @@ const Page = () => {
                 <FaLongArrowAltLeft/>
                 Back
             </p>
+            {loading && loadSkelton()}
             {/* image + name Div*/}
+            { !loading &&
+        <div>
             <div className="flex gap-3 items-center">
-              <Image width={50} height={50} src={"/Ali.jpg"} className=" rounded-full"/>
-              <p>Ali Burhan</p>
+             { blog.image && <img width={50} height={50}  src={`data:image/jpeg;base64,${Buffer.from(blog.image.data).toString("base64")}`} alt="Service Image" className="rounded-full h-14 w-14" />}
+              <p>{blog && blog.title}</p>
             </div>
             {/* blog content div */}
             <div>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Ratione
-              voluptatem dolore molestiae nostrum, error aliquam quisquam sint
-              quibusdam voluptatum sit soluta incidunt cupiditate, veniam eaque
-              ipsum fugiat velit iure consequuntur est sapiente eligendi,
-              nesciunt odio ex? Dolorem cumque doloremque rem sequi tempora
-              minus similique laudantium. Inventore corrupti cumque at quibusdam
-              sed, labore quos provident quia sequi beatae distinctio animi sunt
-              vel veniam. Totam porro magni provident corrupti mollitia, alias
-              modi!
+              {blog.blogText}
             </div>
             {/* likes and comments div */}
-            <div className="">
+            <div className="mt-1">
                 <div className="flex gap-1">
               {/* like */}
               <div className="flex gap-1">
-                <BiLike />
-                <p className="text-xs">23</p>
+              <LikeButton blogId={blog.likes} user={JSON.parse(localStorage.getItem('user'))?._id || ""} />
+                <p className="text-xs">{blog.likes?.length}</p>
               </div>
               {/* comment */}
               <div className="flex gap-1">
+
                 <FaRegComment />
-                <p className="text-xs">23</p>
+                <p className="text-xs">{blog.comments?.length}</p>
               </div>
               {/* share */}
               <div>
+
                 <IoShareSocial />
               </div>
               </div>
@@ -64,9 +114,10 @@ const Page = () => {
             {/* pasted comments div */}
             <div className="flex gap-3 my-1">
 
+
                 {/* image div */}
                 <div>
-                    <Image src={'/Ali.jpg'} height={40} width={40} className="rounded-full"/>
+                    <Image src={'/Ali.jpg'} height={40} width={40} className="rounded-full" alt="Image"/>
                 </div>
                 {/* name + date and comment div */}
                 <div className="flex-1">
@@ -84,9 +135,10 @@ const Page = () => {
                 </div>
             </div>
             <div className="flex gap-3 my-1">
+
                 {/* image div */}
                 <div>
-                    <Image src={'/Ali.jpg'} height={40} width={40} className="rounded-full"/>
+                    <Image src={'/Ali.jpg'} height={40} width={40} className="rounded-full" alt="Image"/>
                 </div>
                 {/* name + date and comment div */}
                 <div className="flex-1">
@@ -104,9 +156,10 @@ const Page = () => {
                 </div>
             </div>
             <div className="flex gap-3 my-1">
+
                 {/* image div */}
                 <div>
-                    <Image src={'/Ali.jpg'} height={40} width={40} className="rounded-full"/>
+                    <Image src={'/Ali.jpg'} height={40} width={40} className="rounded-full" alt="Image"/>
                 </div>
                 {/* name + date and comment div */}
                 <div className="flex-1">
@@ -123,6 +176,8 @@ const Page = () => {
 
                 </div>
             </div>
+            </div>
+            }
           </div>
         </div>
       </div>

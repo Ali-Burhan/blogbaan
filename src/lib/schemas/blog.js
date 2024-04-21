@@ -11,10 +11,16 @@ const blogSchema = new mongoose.Schema({
         type:String
     },
     likes:{
-            type:[String]
+            type:[{
+                userid:String,
+                liked:Boolean
+            }]
     },
     comments:{
-            type:[String]
+            type:[{
+                userid:String,
+                commented:Boolean
+            }]
     },
     createdby:{
         type:String
