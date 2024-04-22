@@ -105,7 +105,7 @@ fetchBlogs()
   
   function loadSkelton() {
     return (<>
-     <div className="md:w-[800px] sm:w-[300px] w-[300px] border rounded-lg p-5 m-auto">
+     <div className="md:w-[800px] shadow-md sm:w-[300px] w-[300px] border rounded-lg p-5 m-auto">
     <div className="flex gap-5">
   <Skeleton variant="circular" width={50} height={50}/>
   <div className="flex-1">
@@ -115,7 +115,7 @@ fetchBlogs()
     </div>
   <Skeleton  width={"100%"} height={200}/>
   </div>
-     <div className="w-[800px] border rounded-lg p-5 m-auto my-3">
+     <div className="md:w-[800px] sm:w-[300px] shadow-md w-[300px] border rounded-lg p-5 m-auto my-3">
     <div className="flex gap-5">
   <Skeleton variant="circular" width={50} height={50}/>
   <div className="flex-1">
@@ -125,7 +125,7 @@ fetchBlogs()
     </div>
   <Skeleton  width={"100%"} height={200}/>
   </div>
-     <div className="w-[800px] border rounded-lg p-5 m-auto">
+     <div className="md:w-[800px] sm:w-[300px] w-[300px] shadow-md border rounded-lg p-5 m-auto">
     <div className="flex gap-5">
   <Skeleton variant="circular" width={50} height={50}/>
   <div className="flex-1">
